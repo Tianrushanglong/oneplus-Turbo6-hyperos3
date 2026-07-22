@@ -39,7 +39,7 @@ python3 tools/validate_device_report.py device-info-*.txt
 bash scripts/collect-fastboot-info.sh
 ```
 
-这两个脚本只读取信息，不解锁、不擦除、不刷写任何分区。
+这两个脚本只读取移植所需信息，不解锁、不擦除、不刷写任何分区，也不采集 IMEI 或设备序列号。
 
 ## 第二步：校验 ROM 输入
 
