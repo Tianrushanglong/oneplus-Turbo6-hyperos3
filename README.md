@@ -12,7 +12,7 @@
 | 目标系统 | `PLU110_16.0.2.408` / ColorOS 16 / Android 16 |
 | SoC | Qualcomm SM8735（第四代骁龙 8s） |
 | 首选 donor | Redmi Turbo 4 Pro / POCO F7，代号 `onyx` |
-| donor 系统 | HyperOS 3 / Android 16 完整包 |
+| donor 系统 | `OS3.0.303.0.WOLCNXM` / HyperOS 3 / Android 16 Recovery 完整包 |
 
 同 SoC 只代表 bring-up 成功率更高，不代表分区可以直接互刷。屏幕、触控、相机、指纹、充电、音频、传感器、TEE 和 SELinux 策略仍需要逐项适配。
 
@@ -55,7 +55,7 @@ python3 tools/validate_device_report.py rooted-layout-*.txt
 需要两个完整包：
 
 1. 与手机当前版本完全对应的 `PLU110_16.0.2.408` ColorOS 16 / Android 16 全量包。
-2. `onyx` 的 HyperOS 3 / Android 16 完整 Recovery OTA 或 Fastboot 包。
+2. `onyx` 的 `OS3.0.303.0.WOLCNXM` HyperOS 3 / Android 16 完整 Recovery OTA，文件名应为 `onyx-ota_full-OS3.0.303.0.WOLCNXM-user-16.0-c2d008638e.zip`，预期 MD5 为 `c2d008638ee18850b506853cfd8db256`。
 
 对带时效签名的大文件链接，建议只把 URL 放进环境变量，并使用可续传分段下载器。下载清单不会保存 URL；链接刷新后，只要文件大小与 ETag 未变即可接着下载：
 
