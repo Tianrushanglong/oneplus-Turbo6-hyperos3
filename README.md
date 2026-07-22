@@ -57,6 +57,17 @@ python3 tools/validate_device_report.py rooted-layout-*.txt
 1. 与手机当前版本完全对应的 `PLU110_16.0.2.408` ColorOS 16 / Android 16 全量包。
 2. `onyx` 的 HyperOS 3 / Android 16 完整 Recovery OTA 或 Fastboot 包。
 
+对带时效签名的大文件链接，建议只把 URL 放进环境变量，并使用可续传分段下载器。下载清单不会保存 URL；链接刷新后，只要文件大小与 ETag 未变即可接着下载：
+
+```bash
+read -rs ROM_URL
+export ROM_URL
+python3 tools/resumable_range_download.py \
+  'inputs/PLU110_16.0.2.408(CN01).zip' \
+  --jobs 12
+unset ROM_URL
+```
+
 本地校验：
 
 ```bash
@@ -96,6 +107,7 @@ GitHub Actions 校验：在仓库的 Actions secrets 中设置 `BASE_ROM_URL`、
 - `scripts/collect-fastboot-info.sh`：采集 bootloader 侧只读报告。
 - `tools/validate_device_report.py`：验证型号、Android 版本、SoC 和解锁状态。
 - `tools/rom_preflight.py`：验证 base/donor 身份、Android 版本和 OTA 结构。
+- `tools/resumable_range_download.py`：持久化 HTTP Range 分段并安全续传签名链接。
 - `tools/verify_ota_payload.py`：流式验证 full OTA、payload 与 payload metadata 哈希。
 - `.github/workflows/ci.yml`：脚本语法和单元测试。
 - `.github/workflows/rom-preflight.yml`：使用仓库 Secrets 下载并校验 ROM。
