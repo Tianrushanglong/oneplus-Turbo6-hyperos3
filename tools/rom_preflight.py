@@ -15,6 +15,7 @@ from typing import Protocol
 
 
 MAX_TEXT_SIZE = 2 * 1024 * 1024
+EXPECTED_DONOR_BUILD = "OS3.0.303.0.WOLCNXM"
 
 
 class ArchiveReader(Protocol):
@@ -203,6 +204,8 @@ def inspect(path: Path, role: str, expected_sha256: str | None = None) -> RomRep
             report.errors.append("无法从包名或 OTA 元数据确认 donor 代号为 onyx")
         if "os3" not in identity and "hyperos 3" not in identity:
             report.errors.append("无法确认 donor 为 HyperOS 3")
+        if EXPECTED_DONOR_BUILD.lower() not in identity:
+            report.errors.append(f"donor 不是已锁定的 {EXPECTED_DONOR_BUILD} 完整包")
 
     if sdk and sdk != "36":
         report.errors.append(f"Android SDK 为 {sdk}，预期 Android 16 / SDK 36")
