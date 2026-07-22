@@ -63,7 +63,6 @@ props=(
 {
   echo "# OnePlus Turbo 6 device report"
   echo "generated_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-  echo "adb_serial=$(adb get-serialno 2>/dev/null | tr -d '\r')"
   for prop in "${props[@]}"; do
     value="$(adb shell getprop "$prop" 2>/dev/null | tr -d '\r')"
     printf '%s=%s\n' "$prop" "$value"
