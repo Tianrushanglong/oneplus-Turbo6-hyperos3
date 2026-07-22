@@ -1,0 +1,20 @@
+# Proprietary source packages and extracted images must never be committed.
+inputs/
+work/
+out/
+reports/
+device-info-*.txt
+fastboot-info-*.txt
+*.img
+*.bin
+*.zip
+*.tgz
+*.tar
+*.tar.gz
+*.7z
+*.ofp
+*.ops
+
+__pycache__/
+*.py[cod]
+.DS_Store

@@ -1,0 +1,58 @@
+name: ROM preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      BASE_ROM_URL: ${{ secrets.BASE_ROM_URL }}
+      DONOR_ROM_URL: ${{ secrets.DONOR_ROM_URL }}
+      BASE_ROM_SHA256: ${{ secrets.BASE_ROM_SHA256 }}
+      DONOR_ROM_SHA256: ${{ secrets.DONOR_ROM_SHA256 }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check required secrets
+        run: |
+          test -n "$BASE_ROM_URL" || { echo "缺少 BASE_ROM_URL secret"; exit 2; }
+          test -n "$DONOR_ROM_URL" || { echo "缺少 DONOR_ROM_URL secret"; exit 2; }
+
+      - name: Reclaim runner disk space
+        run: |
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h /
+
+      - name: Download source packages
+        run: bash scripts/download-roms.sh
+
+      - name: Inspect package identity and structure
+        run: |
+          args=(
+            --base inputs/base.rom
+            --donor inputs/donor.rom
+            --output reports/rom-preflight.json
+          )
+          if [[ -n "$BASE_ROM_SHA256" ]]; then
+            args+=(--base-sha256 "$BASE_ROM_SHA256")
+          fi
+          if [[ -n "$DONOR_ROM_SHA256" ]]; then
+            args+=(--donor-sha256 "$DONOR_ROM_SHA256")
+          fi
+          python3 tools/rom_preflight.py "${args[@]}"
+
+      - name: Upload preflight report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rom-preflight-report
+          path: reports/rom-preflight.json
+          if-no-files-found: warn
+          retention-days: 7
