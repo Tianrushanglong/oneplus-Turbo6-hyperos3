@@ -196,6 +196,8 @@ def inspect(path: Path, role: str, expected_sha256: str | None = None) -> RomRep
     if role == "base":
         if "plu110" not in identity:
             report.errors.append("无法从包名或 OTA 元数据确认 base 属于 PLU110")
+        if "16.0.2.408" not in identity:
+            report.errors.append("base 不是已锁定的 PLU110_16.0.2.408 完整包")
     elif role == "donor":
         if "onyx" not in identity:
             report.errors.append("无法从包名或 OTA 元数据确认 donor 代号为 onyx")

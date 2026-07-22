@@ -9,7 +9,7 @@
 | 项目 | 目标机 / donor |
 | --- | --- |
 | 目标机 | OnePlus Turbo 6，型号 `PLU110` |
-| 目标系统 | ColorOS 16 / Android 16 的当前在用全量包 |
+| 目标系统 | `PLU110_16.0.2.408` / ColorOS 16 / Android 16 |
 | SoC | Qualcomm SM8735（第四代骁龙 8s） |
 | 首选 donor | Redmi Turbo 4 Pro / POCO F7，代号 `onyx` |
 | donor 系统 | HyperOS 3 / Android 16 完整包 |
@@ -45,7 +45,7 @@ bash scripts/collect-fastboot-info.sh
 
 需要两个完整包：
 
-1. 与手机当前版本完全对应的 `PLU110` ColorOS 16 / Android 16 全量包。
+1. 与手机当前版本完全对应的 `PLU110_16.0.2.408` ColorOS 16 / Android 16 全量包。
 2. `onyx` 的 HyperOS 3 / Android 16 完整 Recovery OTA 或 Fastboot 包。
 
 本地校验：

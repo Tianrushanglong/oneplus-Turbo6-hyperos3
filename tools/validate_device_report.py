@@ -13,6 +13,7 @@ from pathlib import Path
 EXPECTED_MODEL = "PLU110"
 EXPECTED_ANDROID = "16"
 EXPECTED_SDK = "36"
+EXPECTED_BUILD = "PLU110_16.0.2.408"
 PLATFORM_PATTERN = re.compile(r"(?:sm8735|\bsun\b)", re.IGNORECASE)
 
 
@@ -37,6 +38,8 @@ def validate(values: dict[str, str]) -> tuple[list[str], list[str], dict[str, st
     model = first(values, "ro.product.model", "ro.product.product.model")
     android = values.get("ro.build.version.release", "")
     sdk = values.get("ro.build.version.sdk", "")
+    build = values.get("ro.build.display.id", "")
+    incremental = values.get("ro.build.version.incremental", "")
     platform_text = " ".join(
         values.get(key, "")
         for key in ("ro.soc.model", "ro.board.platform", "ro.product.board")
@@ -52,6 +55,11 @@ def validate(values: dict[str, str]) -> tuple[list[str], list[str], dict[str, st
         errors.append(f"Android 版本不匹配：检测到 {android or '<缺失>'}，预期 {EXPECTED_ANDROID}")
     if sdk and sdk != EXPECTED_SDK:
         errors.append(f"SDK 不匹配：检测到 {sdk}，预期 {EXPECTED_SDK}")
+    build_identity = f"{build} {incremental}".lower()
+    if EXPECTED_BUILD.lower() not in build_identity:
+        errors.append(
+            f"底包版本不匹配：检测到 {build or incremental or '<缺失>'}，预期 {EXPECTED_BUILD}"
+        )
     if platform_text.strip() and not PLATFORM_PATTERN.search(platform_text):
         errors.append(f"SoC/平台不匹配：{platform_text.strip()}")
     elif not platform_text.strip():
@@ -78,8 +86,8 @@ def validate(values: dict[str, str]) -> tuple[list[str], list[str], dict[str, st
         "sdk": sdk,
         "platform": platform_text.strip(),
         "boot_state": boot_state or ("unlocked" if flash_locked == "0" else "unknown"),
-        "build": values.get("ro.build.display.id", ""),
-        "incremental": values.get("ro.build.version.incremental", ""),
+        "build": build,
+        "incremental": incremental,
         "security_patch": values.get("ro.build.version.security_patch", ""),
     }
     return errors, warnings, summary
