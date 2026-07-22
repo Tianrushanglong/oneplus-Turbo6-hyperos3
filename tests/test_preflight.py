@@ -36,12 +36,15 @@ class RomPreflightTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             base = root / "PLU110_16.0.2.408-full.zip"
-            donor = root / "onyx-OS3-full.zip"
+            donor = root / "onyx-OS3.0.303.0.WOLCNXM-full.zip"
             self.make_ota(
                 base,
                 "post-build=OnePlus/PLU110/PLU110_16.0.2.408\npost-sdk-level=36\n",
             )
-            self.make_ota(donor, "post-build=Xiaomi/onyx/OS3.0.1\npost-sdk-level=36\n")
+            self.make_ota(
+                donor,
+                "post-build=Xiaomi/onyx/OS3.0.303.0.WOLCNXM\npost-sdk-level=36\n",
+            )
             self.assertFalse(rom_preflight.inspect(base, "base").errors)
             self.assertFalse(rom_preflight.inspect(donor, "donor").errors)
 
