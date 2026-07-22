@@ -28,7 +28,7 @@ trap 'rm -f "$tmp"' EXIT
   echo "[devices]"
   printf '%s\n' "$devices"
 
-  for variable in product current-slot slot-count unlocked secure anti is-userspace serialno; do
+  for variable in product current-slot slot-count unlocked secure anti is-userspace; do
     echo
     echo "[getvar:$variable]"
     fastboot getvar "$variable" 2>&1 || true
