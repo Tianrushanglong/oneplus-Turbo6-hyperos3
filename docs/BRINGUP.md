@@ -15,6 +15,8 @@
 
 ## 1. 目标机清点
 
+Root 用户先运行 `scripts/collect-rooted-layout.sh`。该脚本只生成布局报告；在报告经人工复核前，不允许批量导出分区。
+
 从真机报告和原厂包提取：
 
 - `ro.build.fingerprint`、SDK、VNDK、首发 API、补丁日期。

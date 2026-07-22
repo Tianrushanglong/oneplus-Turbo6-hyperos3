@@ -5,6 +5,7 @@ out/
 reports/
 device-info-*.txt
 fastboot-info-*.txt
+rooted-layout-*.txt
 *.img
 *.bin
 *.zip

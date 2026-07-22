@@ -41,6 +41,15 @@ bash scripts/collect-fastboot-info.sh
 
 这两个脚本只读取移植所需信息，不解锁、不擦除、不刷写任何分区，也不采集 IMEI 或设备序列号。
 
+如果手机已通过 Magisk、KernelSU 或 APatch 获得 Root，再采集只读动态分区清单：
+
+```bash
+bash scripts/collect-rooted-layout.sh
+python3 tools/validate_device_report.py rooted-layout-*.txt
+```
+
+此阶段只读取槽位、AVB、分区名称和容量，不导出任何分区内容。验证清单后，维护者才会为当前设备生成严格白名单的导出脚本。
+
 ## 第二步：校验 ROM 输入
 
 需要两个完整包：
