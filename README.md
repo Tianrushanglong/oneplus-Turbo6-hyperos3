@@ -66,6 +66,17 @@ python3 tools/rom_preflight.py \
   --output reports/rom-preflight.json
 ```
 
+对单个完整 A/B OTA 做全量流式校验（同时验证 ZIP 身份、`payload.bin` 和
+`payload_properties.txt` 中的 payload/metadata SHA-256）：
+
+```bash
+python3 tools/verify_ota_payload.py /path/to/PLU110-full-ota.zip \
+  --expected-product PLU110 \
+  --expected-version 'PLU110_16.0.2.408(CN01)' \
+  --progress \
+  --output reports/base-ota-verification.json
+```
+
 GitHub Actions 校验：在仓库的 Actions secrets 中设置 `BASE_ROM_URL`、`DONOR_ROM_URL`，并建议同时设置 `BASE_ROM_SHA256`、`DONOR_ROM_SHA256`，然后手动运行 **ROM preflight**。不要把含访问令牌的 URL 填进普通 workflow input。
 
 ## Bring-up 路线
@@ -85,6 +96,7 @@ GitHub Actions 校验：在仓库的 Actions secrets 中设置 `BASE_ROM_URL`、
 - `scripts/collect-fastboot-info.sh`：采集 bootloader 侧只读报告。
 - `tools/validate_device_report.py`：验证型号、Android 版本、SoC 和解锁状态。
 - `tools/rom_preflight.py`：验证 base/donor 身份、Android 版本和 OTA 结构。
+- `tools/verify_ota_payload.py`：流式验证 full OTA、payload 与 payload metadata 哈希。
 - `.github/workflows/ci.yml`：脚本语法和单元测试。
 - `.github/workflows/rom-preflight.yml`：使用仓库 Secrets 下载并校验 ROM。
 
